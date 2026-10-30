@@ -37,8 +37,19 @@ public interface ATCUnitsRepository extends JpaRepository<AktTechConditionUnits,
             "   LEFT JOIN sklad.nomenclatures n ON datcu.nomenclature_id = n.id " +
             "   left join sklad.atcu_cards ac on datcu.id = ac.atcu_id " +
             "   left join sklad.cards crd on crd.id_card = ac.card_id " +
-            "WHERE datcu.atc_id = :idATC;", nativeQuery = true)
+            "WHERE datcu.atc_id = :idATC and datcu.unit_id isnull;", nativeQuery = true)
     List<ATCUnitDTO> findAllByAtcID(Long idATC);
+
+    @Query(value = """
+            select datcu.id, u.serial_number, u.category, cast(0 as numeric), cast(0 as numeric), cast(1 as numeric), u.price, :atcId,
+                   d.id, n.id, cast(1 as bigint), d.denomination_name, n.nomenclature_name, cast(0 as bigint)
+            from sklad.document_akt_tech_condition_units datcu
+                    left join sklad.units u on u.id = datcu.unit_id
+                    left join sklad.denominations d on u.denomination_id = d.id
+                    left join sklad.nomenclatures n on u.nomenclature_id = n.id
+            where atc_id = :atcId and unit_id is not null;
+""", nativeQuery = true)
+    List<ATCUnitDTO> findAllNumericUnits(Long atcId);
 
     @Query(value = "select coalesce(sum(datcu.price), 0) from sklad.document_akt_tech_condition_units datcu where atc_id = :idATC", nativeQuery = true)
     BigDecimal sumUnitsPrice(Long idATC);

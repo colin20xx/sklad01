@@ -104,6 +104,7 @@ public class AktAcceptanceTransferController {
         model.addAttribute("app", tempAPP);
 //        model.addAttribute("moves_list", aktAcceptanceTransferUnitsRepository.findByAktAcceptanceTransferIdOrderByIdDesc(id));
         model.addAttribute("moves_list", aktAcceptanceTransferUnitsRepository.findAllByAktAcceptanceTransferId(id));
+        model.addAttribute("units_list", aktAcceptanceTransferUnitsRepository.findANumericUnitsByAktAcceptanceTransferId(id));
 
         Optional<AppPDF> firstPDF = fileStorageService.getFirstPDF(tempAPP.getId(), tempAPP.getDocumentsType(), true);
         firstPDF.ifPresent(pdf -> model.addAttribute("firstPDF", pdf));

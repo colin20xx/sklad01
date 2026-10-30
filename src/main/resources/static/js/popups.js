@@ -1,7 +1,8 @@
-import {InitializerPopup} from "./initializer-popup.js";
+import {InitFormGetNewCardNumber, InitializerPopup} from "./initializer-popup.js";
 
 document.addEventListener("DOMContentLoaded", function () {
 let currentRequest;
+
     document.querySelectorAll(".open-popup").forEach(function(button) {
 
             button.addEventListener("click", function(e) {
@@ -27,20 +28,20 @@ let currentRequest;
 
     document.querySelectorAll(".open-simple-popup").forEach(
 
-        function (button){
+        function (button) {
             button.addEventListener("click", function (e) {
                 e.preventDefault();
                 let url = this.dataset.url;
 
-                fetch(url, {method:"POST"})
+                fetch(url, {method: "POST"})
                     .then(response => response.text())
                     .then(html => {
                         let smallLogPanel = null;
                         const globalModalContent = document.getElementById("globalModalContent");
-                        if (globalModalContent){
+                        if (globalModalContent) {
                             globalModalContent.innerHTML = html;
                             smallLogPanel = document.getElementById("small_log_bar");
-                        }else{
+                        } else {
                             alert('На цій сторінці неможливо створення іншого документу.');
                             return;
                         }
@@ -48,57 +49,66 @@ let currentRequest;
 
                         let modal = new bootstrap.Modal(document.getElementById("globalModal"));
 
-                        let nomenclatureSelect = $('#nomenclature_select').select2( { dropdownParent: $("#globalModalContent"), width:'100%' } );
+                        let nomenclatureSelect = $('#nomenclature_select').select2({
+                            dropdownParent: $("#globalModalContent"),
+                            width: '100%'
+                        });
 
                         $('#denomination_select').select2(
                             {
                                 dropdownParent: $("#globalModalContent"),
-                                width:'100%'
+                                width: '100%'
                             }
-                        ).on('change', function ()
-                        {
+                        ).on('change', function () {
 
                             nomenclatureSelect
                                 .empty()
-                                .append(new Option('виберіть номенклатуру','',true,true))
+                                .append(new Option('виберіть номенклатуру', '', true, true))
                                 .trigger('change');
 
-                                fetch('/getNomenclatureListByIdDenomination?idDenom=' + this.value, {method:'GET'})
-                                    .then(res => { return res.json() })
-                                    .then(
-                                        dataArray =>{
-                                            if (dataArray.length > 0){
-                                                nomenclatureSelect.prop('disabled', false);
-                                                dataArray.forEach(nomenclature =>{
-                                                    nomenclatureSelect.append(new Option(nomenclature.title, nomenclature.id))
-                                                });
+                            fetch('/getNomenclatureListByIdDenomination?idDenom=' + this.value, {method: 'GET'})
+                                .then(res => {
+                                    return res.json()
+                                })
+                                .then(
+                                    dataArray => {
+                                        if (dataArray.length > 0) {
+                                            nomenclatureSelect.prop('disabled', false);
+                                            dataArray.forEach(nomenclature => {
+                                                nomenclatureSelect.append(new Option(nomenclature.title, nomenclature.id))
+                                            });
 
-                                                nomenclatureSelect.trigger('change');
-                                            }else{
-                                                nomenclatureSelect
-                                                    .empty()
-                                                    .append(new Option('номенклатури відсутні','',true,true))
-                                                    .prop('disabled', true)
-                                                    .trigger('change');
-                                            }
-                                        })
-                                    .catch(error =>{
-                                        console.error('error loading nomenclatures', error);
-                                    });
+                                            nomenclatureSelect.trigger('change');
+                                        } else {
+                                            nomenclatureSelect
+                                                .empty()
+                                                .append(new Option('номенклатури відсутні', '', true, true))
+                                                .prop('disabled', true)
+                                                .trigger('change');
+                                        }
+                                    })
+                                .catch(error => {
+                                    console.error('error loading nomenclatures', error);
+                                });
                         });
+
+                        InitFormGetNewCardNumber();
 
                         modal.show();
                     });//end .then block
 
             });
+
         }
     );
-
+// ----------------------------------------------------------------------------------[ open-popup-add-numeric-units ]---
     const button = document.querySelector(".open-popup-add-numeric-units");
     if (button){
         button.addEventListener("click", async function (){
             try{
 
+                const sourceDocumentId = button.dataset.documentId;
+                const sourceDocumentShortTitle = button.dataset.docTitle;
                 const res = await fetch(button.dataset.url, {method:'POST'})
 
                 if(!res.ok){ throw new Error(`HTTP error: ${res.status}`); }
@@ -110,7 +120,6 @@ let currentRequest;
                 let modal = new bootstrap.Modal( document.getElementById("globalModal"));
 
                 //----------------------------------------------------------------------------------[ init elements ]---
-
                     const searchInputField = document.querySelector('.field-input-serial-number');
                     const targetTBody = $('#tableBodyList');
                     const tempTableSearch = $('#tempTableSearch');
@@ -158,7 +167,8 @@ let currentRequest;
                     targetTBody.on('click', '.add-found-unit-to-temp-table', function () {
                         // url = /unit/add-unit-to-document
                         fetch(this.dataset.url, {
-                            method:'POST', body: new URLSearchParams({ unitId: this.dataset.unitId })
+                            method:'POST', body: new URLSearchParams({
+                                unitId: this.dataset.unitId, documentId: sourceDocumentId,  documentShortTitle: sourceDocumentShortTitle})
                         });
 
                         const row = $(this).closest('tr');
@@ -184,7 +194,7 @@ let currentRequest;
                         const row = $(this).closest('tr').remove();
                     });
 
-                //-----------------------------------------------------------------------------[ edn init elements ]----
+                //-----------------------------------------------------------------------------[ end init elements ]----
 
                 modal.show();
 
@@ -194,6 +204,7 @@ let currentRequest;
 
         });
     }//if end
+
 
 
 }); //end document ready

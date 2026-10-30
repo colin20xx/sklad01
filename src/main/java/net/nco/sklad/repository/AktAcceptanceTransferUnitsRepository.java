@@ -13,14 +13,26 @@ public interface AktAcceptanceTransferUnitsRepository extends JpaRepository<AktA
     List<AktAcceptanceTransferUnits> findByAktAcceptanceTransferIdOrderByIdDesc(Long id);
 
     @Query(value = """
-        select cast(:id as bigint), daatu.id, d.id, d.denomination_name, n.id, n.nomenclature_name, abs(daatu.quantity), daatu.category, c.id_card, c.price, c.card_number
+        select cast(:id as bigint), daatu.id, d.id, d.denomination_name, n.id, n.nomenclature_name, abs(daatu.quantity), daatu.category, c.id_card, c.price, c.card_number, ''
         from sklad.document_akt_acceptance_transfer_units daatu
                     left join sklad.denominations d on d.id = daatu.denomination_id
                     left join sklad.nomenclatures n on daatu.nomenclature_id = n.id
                     left join sklad.aatu_cards ac on daatu.id = ac.aatu_id
                     left join sklad.cards c on ac.card_id = c.id_card
-        where akt_acceptance_transfer_id = :id order by d.denomination_name;
+        where akt_acceptance_transfer_id = :id and daatu.unit_id is null order by d.denomination_name;
 """, nativeQuery = true)
     List<AATUnitDTO> findAllByAktAcceptanceTransferId(@Param("id") Long id);
+
+
+
+    @Query(value = """
+            select cast(:id as bigint), daatu.id, d.id, d.denomination_name, n.id, n.nomenclature_name, abs(daatu.quantity), u.category, cast(1 as bigint), u.price, cast(1 as bigint), u.serial_number
+            from sklad.document_akt_acceptance_transfer_units daatu
+                left join sklad.units u on u.id = daatu.unit_id
+                left join sklad.denominations d on u.denomination_id = d.id
+                left join sklad.nomenclatures n on u.nomenclature_id = n.id
+            where akt_acceptance_transfer_id = :id and daatu.unit_id is not null;
+""", nativeQuery = true)
+    List<AATUnitDTO> findANumericUnitsByAktAcceptanceTransferId(@Param("id") Long id);
 
 }//end class

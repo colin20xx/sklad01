@@ -1,6 +1,7 @@
 package net.nco.sklad.repository;
 
 import net.nco.sklad.dto.UnitDTO;
+import net.nco.sklad.dto.UnitDocumentsDTO;
 import net.nco.sklad.entity.Unit;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -31,4 +32,14 @@ public interface UnitRepository extends JpaRepository<Unit, Long> {
     List<UnitDTO> findAllDTO();
 
     List<Unit> findAllBySerialNumberContainingIgnoreCase(String serialNumber);
-}
+
+    @Query(value = """
+        select * from sklad.vw_app_movements_unit where id = :unitId
+            union all
+            select * from sklad.vw_invoice_movements_unit where id = :unitId
+        order by document_date;
+""", nativeQuery = true)
+    List<UnitDocumentsDTO> findAllDocuments(Long unitId);
+
+
+}//and interface

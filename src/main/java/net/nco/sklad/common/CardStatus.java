@@ -9,6 +9,7 @@ public enum CardStatus {
     private final String value;
 
     CardStatus(String value) {
+
         this.value = value;
     }
 

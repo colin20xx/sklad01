@@ -6,9 +6,11 @@ import net.nco.sklad.dto.CardMovementDTO;
 import net.nco.sklad.entity.documents.Card;
 import net.nco.sklad.repository.*;
 import net.nco.sklad.services.CardsService;
+import org.springframework.cglib.core.Local;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -71,8 +73,6 @@ public class CardController {
         return "cards/cards_common_list";
     }
 
-
-
     @PostMapping("/cards/ajax/saveNewCard")
 //    @ModelAttribute("card") CardDTO cardDTO, Model model
     public ResponseEntity<Long> saveNewCard(@RequestParam("id_denom") int idDenom, @RequestParam("id_nomenclature") Long idNomenclature) {
@@ -129,6 +129,7 @@ public class CardController {
 
     @GetMapping("/cards/ajax/last_card_number")
     public ResponseEntity<Long> lastCardNumber() {
+        System.out.println("[sklad]--->" + getClass());
         if(cardRepository.findTopByOrderByCardNumberDesc() == null) {
             return ResponseEntity.ok(1L);
         } else return ResponseEntity.ok(cardRepository.findTopByOrderByCardNumberDesc().getCardNumber());
@@ -158,5 +159,14 @@ public class CardController {
         }
         cardRepository.deleteById(id);
         return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/cards/simple-create-new-card")
+    public ResponseEntity<Card> simpleCreateNewCard(@RequestParam Long cardNumber, @RequestParam @DateTimeFormat(pattern = "dd.mm.yyyy'T'HH:mm")LocalDateTime createdAt){
+        Card card = new Card();
+        card.setCardNumber(cardNumber);
+
+//        cardRepository.save(card)
+        return ResponseEntity.ok(card);
     }
 }

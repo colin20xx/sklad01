@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import net.nco.sklad.entity.Nomenclature;
 import net.nco.sklad.entity.Unit;
+import net.nco.sklad.entity.documents.Card;
 import net.nco.sklad.handler.DocumentUnitService;
 import net.nco.sklad.repository.DenominationRepository;
 import net.nco.sklad.repository.UnitRepository;
@@ -41,6 +42,9 @@ public class UnitController {
 //        model.addAttribute("denomination_list_json", json);
 
         model.addAttribute("denominations", denominationRepository.findDenominationsByNameNative(""));
+        Card card = new Card();
+        card.setDocType(18);
+        model.addAttribute("new_card", card);
         return "fragments/fr-modal-new-unit :: div-modal-new-unit";
     }
 
@@ -73,6 +77,7 @@ public class UnitController {
         Unit unit = unitRepository.findById(id).orElse(null);
         if(unit != null){
             model.addAttribute("unit", unit);
+            model.addAttribute("document_list", unitRepository.findAllDocuments(id));
             return "unit/unit-details";
         }else {
             //TODO error.page
@@ -93,11 +98,19 @@ public class UnitController {
     }
 
     @PostMapping("/add-unit-to-document")
-    public ResponseEntity<String> addUnitToDocument(@RequestParam Long unitId){
+    public ResponseEntity<Void> addUnitToDocument(@RequestParam Long unitId, @RequestParam Long documentId, @RequestParam String documentShortTitle){
 
         System.out.println("[sklad]--->" + getClass().toString() + ":addUnitToDocument() > " + unitId);
-        docUnitService.addUnit("app", 1L ,unitId);
-        return ResponseEntity.ok("");
+
+        docUnitService.addUnit(documentShortTitle, documentId, unitId);
+
+        return ResponseEntity.noContent().build();
+    }
+
+    @PostMapping("/addCard")
+    public ResponseEntity<Void> addCard(@RequestBody Card card) {
+        System.out.println("[sklad]--->" + getClass().toString() + ":addCard() > " + card);
+        return ResponseEntity.noContent().build();
     }
 
 }//end class

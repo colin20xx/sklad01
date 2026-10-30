@@ -17,7 +17,7 @@ public class DocumentUnitService {
                         DocumentUnitHandler::getDocumentTitle, Function.identity()
                 )
         );
-        System.out.println("[sklad]--->" + getClass() + ", size:" + handlers.size());
+        System.out.println("[sklad]--->" + getClass() + ", add unit do document handlers:" + handlers.size());
     }
 
     public void addUnit(String docTitle, Long documentId, Long unitId){

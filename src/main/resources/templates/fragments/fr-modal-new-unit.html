@@ -14,6 +14,7 @@
   <script src="../../static/js/script.js"> </script>
   <script src="../../static/js/flatpickr.min.js"> </script>
   <script src="../../static/js/select2.min.js"> </script>
+  <script src="../../static/js/popups.js"> </script>
 </head>
 <body>
 
@@ -43,9 +44,17 @@
           </div>
 
             <div class="row p-0">
-                <div class="col-12">
+                <div class="col-9">
                     <label for="nomenclature_select" class="col-form-label-sm">номенклатура:</label>
                     <select id="nomenclature_select" th:field="*{nomenclature}"> </select>
+                </div>
+                <div class="col">
+                    <label for="card_number_added" class="col-form-label-sm">картка:</label>
+                    <input type="text" class="form-control form-control-sm" id="card_number_added" readonly>
+                </div>
+                <div class="col-1">
+                    <label for="unit_card_number_id" class="col-form-label-sm">id:</label>
+                    <input type="text" id="unit_card_number_id" class="form-control form-control-sm" readonly>
                 </div>
             </div>
 
@@ -125,17 +134,56 @@
             </div>
           </div>
 
-          <div class="row">
-              <div class="col-12">
-                <label class="col-form-label-sm m-0" for="doc_comments">примітка:</label>
-                <input type="text" class="form-control" id="doc_comments" value="примітка" th:field="*{comment}">
-          </div>
-        </div>
-      </div><!--[end div container-fluid]-->
+              <div class="row">
+                  <div class="col-12">
+                    <label class="col-form-label-sm m-0" for="doc_comments">примітка:</label>
+                    <input type="text" class="form-control" id="doc_comments" value="примітка" th:field="*{comment}">
+              </div></div>
+        </div><!--[end div container-fluid]-->
+          <!--------------------------------------------------------------------[ div container-fluid new card form ]-->
 
-          <div class="container-fluid border border-danger p-3"> <!--[ div container-fluid new card form]-->
-              card form
+          <div class="container-fluid p-3" style="height: 250px" th:object="${new_card}">
+
+                  <div class="card">
+                      <div class="card-header">
+                          нова картка
+                      </div>
+                      <div class="card-body">
+                          <div class="row">
+                              <div class="col">
+                                  <label for="card_number" class="small">номер картки:</label>
+                                  <div class="input-group">
+                                      <input class="form-control border-secondary border-end-0" id="card_number" type="number" th:field="*{cardNumber}" min="1" max="99999" step="1">
+                                      <span id="spinner_loading" class="input-group-text border-secondary border-start-0 bg-white py-0" hidden>
+                                          <div class="spinner-border spinner-border-sm small" role="status"> </div>
+                                      </span>
+                                      <button class="btn btn-outline-secondary btnGetNewCardNumber" id="btn_get_next_num_card" type="button" value="">+ номер</button>
+                                      <button class="btn btn-outline-secondary btnFoundCardNumber" id="btn_found_card_number" type="button" value=""> &#128270; пошук</button>
+                                  </div>
+                              </div>
+                              <div class="col">
+                                  <label for="created_at" class="small">дата створення:</label>
+                                  <input id="created_at" class="form-control form-control" type="datetime-local" value="" th:field="*{createdAt}">
+                                  <input type="hidden" readonly id="field_doc_type_id" name="doc_type_id" th:field="*{docType}">
+                              </div>
+
+                              <div class="col">
+                                  <label for="field_comment" class="small">примітка:</label>
+                                  <input id="field_comment" class="form-control form-control" type="text" th:field="*{comments}">
+                              </div>
+                              <div class="col-1">
+                                  <label for="btn-create-new-card" class="small"> </label>
+                                  <button class="btn btn-secondary" type="button" id="btn-create-new-card">додати</button>
+                              </div>
+                          </div>
+
+                          <div class="row">
+                          </div>
+
+                      </div>
+                  </div>
           </div>
+
 
 <!---------------------------------------------------------------------------------------------------------[ footer ]-->
       <div class="modal-footer justify-content-between">
@@ -157,7 +205,7 @@
 
       <div class="row">
           <div class="col-12">
-              <input type="text" class="form-control form-control-sm" id="small_log_bar" value="">
+              <span id="small_log_bar" class="bg-body-tertiary border border-secondary w-100">ffdd</span>
           </div>
       </div>
   </div>

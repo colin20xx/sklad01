@@ -121,7 +121,6 @@ public class AktTechConditionController {
     @GetMapping("/{id}")
     public String atc(Model model, @PathVariable Long id) {
         tempATC = aktTechConditionRepository.findById(id).get();
-        System.out.println(tempATC.getDocumentsType().getId());
 
         if(tempATC.getSender().getIdSubdep() > 0){
             depsWithSubDepsDTO = departmentRepository.findDepartmentWithSubDepartmentById(tempATC.getSender().getIdDep(), tempATC.getSender().getIdSubdep());
@@ -144,6 +143,7 @@ public class AktTechConditionController {
 
         model.addAttribute("denomination_list", denominationRepository.getDenominationsWithOMandNomenclaturesCount(""));
         model.addAttribute("moves_list", atcUnitsRepository.findAllByAtcID(id));
+        model.addAttribute("units_list", atcUnitsRepository.findAllNumericUnits(id));
         model.addAttribute("totalSum", atcUnitsRepository.sumUnitsPrice(id));
         model.addAttribute("totalQuantity", atcUnitsRepository.sumUnitsQuantity(id));
         model.addAttribute("history_list", documentCommitHistoryRepository.findByDocumentIdAndDocumentTypeOrderByRecordDateTimeDesc(tempATC.getId(), tempATC.getDocumentsType()));

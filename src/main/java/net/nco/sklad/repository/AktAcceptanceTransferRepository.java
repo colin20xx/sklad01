@@ -39,6 +39,6 @@ public interface AktAcceptanceTransferRepository extends JpaRepository<AktAccept
 """, nativeQuery = true)
     List<AktAcceptTransferDTO> findAllBySearchParams(@Param("number") String number, @Param("sender") String sender, @Param("receiver") String receiver);
 
-
+//    String findBy
 
 }

@@ -15,10 +15,11 @@ public class AATUnitDTO {
     private Long cardId;
     private BigDecimal price;
     private Long cardNumber;
+    private String serialNumber;
 
-    public AATUnitDTO() {    }
+    public AATUnitDTO() {}
 
-    public AATUnitDTO(Long idApp, Long idAppUnit, Long idDenomination, String denominationName, Long idNomenclature, String nomenclatureName, BigDecimal quantity, int category, Long cardId, BigDecimal price, Long cardNumber) {
+    public AATUnitDTO(Long idApp, Long idAppUnit, Long idDenomination, String denominationName, Long idNomenclature, String nomenclatureName, BigDecimal quantity, int category, Long cardId, BigDecimal price, Long cardNumber, String serialNumber) {
         this.idApp = idApp;
         this.idAppUnit = idAppUnit;
         this.idDenomination = idDenomination;
@@ -30,6 +31,7 @@ public class AATUnitDTO {
         this.cardId = cardId;
         this.price = price;
         this.cardNumber = cardNumber;
+        this.serialNumber = serialNumber;
     }
 
     public Long getIdApp() {
@@ -118,5 +120,13 @@ public class AATUnitDTO {
 
     public void setCardNumber(Long cardNumber) {
         this.cardNumber = cardNumber;
+    }
+
+    public String getSerialNumber() {
+        return serialNumber;
+    }
+
+    public void setSerialNumber(String serialNumber) {
+        this.serialNumber = serialNumber;
     }
 }//end class

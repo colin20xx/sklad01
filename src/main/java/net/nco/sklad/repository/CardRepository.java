@@ -59,7 +59,7 @@ public interface CardRepository extends JpaRepository<Card, Long>, JpaSpecificat
     left join sklad.document_akt_acceptance_transfer_units daatu on daat.id = daatu.akt_acceptance_transfer_id
     left join sklad.aatu_cards ic on daatu.id = ic.aatu_id
     left join sklad.cards c on c.id_card = ic.card_id
-    left join sklad.documents_type dt on daat.document_type_id = dt.id
+    left join sklad.documents_type dt on daat.doc_type_id = dt.id
             where c.id_card=?1
     union all
             select datc.id,
@@ -74,7 +74,7 @@ public interface CardRepository extends JpaRepository<Card, Long>, JpaSpecificat
                      left join sklad.document_akt_tech_condition_units datcu on datc.id = datcu.atc_id
                      left join sklad.atcu_cards ic on datcu.id = ic.atcu_id
                      left join sklad.cards c on c.id_card = ic.card_id
-                     left join sklad.documents_type dt on dt.id = datc.doc_type
+                     left join sklad.documents_type dt on dt.id = datc.doc_type_id
             where c.id_card=?1 order by date_of_record asc;
     """, nativeQuery = true)
     List<CardMovementDTO> getCardMovements(Long card_id);

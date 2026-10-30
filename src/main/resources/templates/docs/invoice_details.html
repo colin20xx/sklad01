@@ -100,9 +100,9 @@
 
                         </button>
 
-                        <button th:class="${invoice.commitedAt != null ? 'btn btn-outline-secondary btn-sm disabled' : 'btn btn-outline-secondary btn-sm'}"
-                                onclick="showModalDiv()">+ додати майно
-                        </button>
+<!--                        <button th:class="${invoice.commitedAt != null ? 'btn btn-outline-secondary btn-sm disabled' : 'btn btn-outline-secondary btn-sm'}"-->
+<!--                                onclick="showModalDiv()">+ додати майно-->
+<!--                        </button>-->
                     </div>
                 </td>
             </tr>
@@ -117,7 +117,9 @@
                                 th:data-url="@{/akt-accept-transfer/{id}/getUnitsList(id=${invoice.id})}" onclick="showModalDiv(this)">+ додати безномерне майно</button>
 
                         <button th:class="${invoice.commitedAt != null ? 'btn btn-outline-secondary disabled w-50' : 'btn btn-outline-secondary w-50 open-popup-add-numeric-units'}"
-                                th:data-url="@{/unit/form-add-numeric-unit}" >+ додати номерне майно</button>
+                                th:data-url="@{/unit/form-add-numeric-unit}"
+                                th:data-document-id="${invoice.id}"
+                                th:data-doc-title="invoice">+ додати номерне майно</button>
                     </div>
                 </td>
             </tr>

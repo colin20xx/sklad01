@@ -2,6 +2,7 @@ package net.nco.sklad.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import net.nco.sklad.entity.documents.Card;
 
 import java.math.BigDecimal;
 
@@ -33,6 +34,10 @@ public class Unit extends BaseUnit{
     })
     private DepSubdepPair currentDepartment;
 
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "card_id", unique = true)
+    @JsonIgnore
+    private Card card;
 
     public Unit getParent() {
         return parent;
@@ -72,5 +77,13 @@ public class Unit extends BaseUnit{
 
     public void setCurrentDepartment(DepSubdepPair currentDepartment) {
         this.currentDepartment = currentDepartment;
+    }
+
+    public Card getCard() {
+        return card;
+    }
+
+    public void setCard(Card card) {
+        this.card = card;
     }
 }

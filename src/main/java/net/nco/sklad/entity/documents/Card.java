@@ -6,6 +6,7 @@ import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import net.nco.sklad.entity.Denomination;
 import net.nco.sklad.entity.Nomenclature;
+import net.nco.sklad.entity.Unit;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.math.BigDecimal;

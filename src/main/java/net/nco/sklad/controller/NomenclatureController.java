@@ -37,7 +37,6 @@ public class NomenclatureController {
 
     @GetMapping("nomenclatures_list")
     public ResponseEntity<List<NomenclatureDTO>> getNomenclatureList(@RequestParam Long idDenom){
-        System.out.println("id denom: " + idDenom);
         return ResponseEntity.ok(nomenclatureRepository.findAllNomenclaturesByDenominationId(idDenom));
 
     }

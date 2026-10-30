@@ -1,10 +1,12 @@
 package net.nco.sklad.entity.documents;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import net.nco.sklad.entity.Denomination;
 import net.nco.sklad.entity.Nomenclature;
+import net.nco.sklad.entity.Unit;
 
 import java.math.BigDecimal;
 import java.util.HashSet;
@@ -53,6 +55,10 @@ public class AktTechConditionUnits {
             inverseJoinColumns = @JoinColumn(name = "card_id")
     )
     private Set<Card> cards = new HashSet<Card>();
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JsonIgnore
+    private Unit unit;
 
 
     public Long getId() {
@@ -162,5 +168,13 @@ public class AktTechConditionUnits {
             this.cards.remove(card);
             card.getAtcUnits().remove(this);
         }
+    }
+
+    public Unit getUnit() {
+        return unit;
+    }
+
+    public void setUnit(Unit unit) {
+        this.unit = unit;
     }
 }//end class

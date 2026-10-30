@@ -77,7 +77,9 @@
                                     th:data-url="@{/akt-accept-transfer/{id}/getUnitsList(id=${app.id})}" onclick="showModalDiv(this)">+ додати безномерне майно</button>
 
                             <button th:class="${app.committedAt != null ? 'btn btn-outline-secondary disabled w-50' : 'btn btn-outline-secondary w-50 open-popup-add-numeric-units'}"
-                                    th:data-url="@{/unit/form-add-numeric-unit}" >+ додати номерне майно</button>
+                                    th:data-url="@{/unit/form-add-numeric-unit}"
+                                    th:data-document-id="${app.id}"
+                                    th:data-doc-title="${app.documentsType.englishShortTitle}" >+ додати номерне майно</button>
                         </div>
                     </td>
                 </tr>
@@ -109,6 +111,7 @@
                             <th style="width: 50px">№:id</th>
                             <th>найменування</th>
                             <th>номенклатура</th>
+                            <th>номер</th>
                             <th>кількість</th>
                             <th style="width: 50px;">категорія</th>
                             <th>ціна</th>
@@ -117,13 +120,35 @@
                         </tr>
                     </thead>
                     <tbody>
+
+                        <tr th:if="${#lists.isEmpty(units_list)}">
+                            <td colspan="9" style="text-align: center; font-weight: bold; font-size: 20px">Майно відсутнє</td>
+                        </tr>
+                        <tr th:each="mov, stat: ${units_list}" th:unless="${#lists.isEmpty(units_list)}">
+                           <td th:text=" ${stat.index + 1}"></td>
+                           <td th:text="${mov.denominationName}" style="text-align: left"></td>
+                           <td th:text="${mov.nomenclatureName == null ? '-' : mov.nomenclatureName}" style="text-align: center"> </td>
+                           <td th:text="${mov.serialNumber}" style="text-align: center"> </td>
+                           <td th:text="${mov.quantity}" ></td>
+                           <td th:text="${mov.category}" ></td>
+                           <td th:text="${#numbers.formatDecimal(mov.price, 1, 'WHITESPACE', 2, 'COMMA')}"></td>
+                           <td> <a class="link-primary m-0 p-0" th:href="@{/cards/{id}/details(id=${mov.cardId}) }" th:text="${mov.cardNumber}"></a> </td>
+                            <td class="p-1">
+                                <div class="input-group input-group-sm w-100">
+                                    <button class="btn btn-outline-secondary w-50" th:onclick="|deleteAPPUnit(${mov.idAppUnit})|">&#x1F5D1;</button>
+                                    <button class="btn btn-outline-secondary w-50" disabled>&#9999;</button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr><td colspan="9">список безномерного майна</td></tr>
                         <tr th:if="${#lists.isEmpty(moves_list)}">
-                            <td colspan="8" style="text-align: center; font-weight: bold; font-size: 20px">Майно відсутнє</td>
+                            <td colspan="9" style="text-align: center; font-weight: bold; font-size: 20px">Майно відсутнє</td>
                         </tr>
                         <tr th:each="mov, stat: ${moves_list}" th:unless="${#lists.isEmpty(moves_list)}">
                            <td th:text=" ${stat.index + 1}"></td>
                            <td th:text="${mov.denominationName}" style="text-align: left"></td>
                            <td th:text="${mov.nomenclatureName == null ? '-' : mov.nomenclatureName}" style="text-align: left"> </td>
+                           <td style="text-align: center"> - </td>
                            <td th:text="${mov.quantity}" ></td>
                            <td th:text="${mov.category}" ></td>
                            <td th:text="${#numbers.formatDecimal(mov.price, 1, 'WHITESPACE', 2, 'COMMA')}"></td>
