@@ -162,11 +162,13 @@ public class CardController {
     }
 
     @PostMapping("/cards/simple-create-new-card")
-    public ResponseEntity<Card> simpleCreateNewCard(@RequestParam Long cardNumber, @RequestParam @DateTimeFormat(pattern = "dd.mm.yyyy'T'HH:mm")LocalDateTime createdAt){
+    public ResponseEntity<Card> simpleCreateNewCard(@RequestParam Long cardNumber, @RequestParam(required = false) @DateTimeFormat(pattern = "dd.mm.yyyy'T'HH:mm")LocalDateTime cardDate){
         Card card = new Card();
         card.setCardNumber(cardNumber);
-
-//        cardRepository.save(card)
+        card.setCreatedAt(LocalDateTime.now());
+        card.setCardDateTime(cardDate);
+        card.setDocType(18);
+        cardRepository.save(card);
         return ResponseEntity.ok(card);
     }
 }

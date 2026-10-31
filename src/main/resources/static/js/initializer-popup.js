@@ -85,22 +85,17 @@
         $('#btn-create-new-card').on('click', function (e) {
             e.preventDefault();
 
-            const fieldCardCreatedAt = $('#created_at');
-            const fieldCardNumberForUnit =
-            const fieldCardIdForUnit = $('#unit_card_number_id');
-
-            if(fieldCardCreatedAt.val() === '') {
-                const now = new Date();
-                now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
-                fieldCardCreatedAt.val(now.toISOString().slice(0, 16));
-            };
-
-            fetch('/cards/simple-create-new-card',{method:'POST'})
+            fetch('/cards/simple-create-new-card',
+                {method:'POST',
+                body: new URLSearchParams({cardNumber: $('#card_number').val(), cardDate: $('#created_at').val()})
+                })
                 .then(promise => async function (){
-                        return promise.json();
+                        return await promise.json();
                     })
                 .then(card =>{
                     console.log(card);
+                    $('#card_number_added').val(card.cardNumber);
+                    $('#unit_card_number_id').val(card.id);
                 });
         });
     }//end function
