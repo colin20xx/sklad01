@@ -25,7 +25,7 @@
       <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
     </div>
 
-    <form th:action="@{/unit/save}" th:object="${new_unit}" method="post">
+    <form th:action="@{/unit/save-from-popup}" th:object="${new_unit}" method="post">
 
       <div class="modal-body">
 
@@ -54,7 +54,7 @@
                 </div>
                 <div class="col-1">
                     <label for="unit_card_number_id" class="col-form-label-sm">id:</label>
-                    <input type="text" id="unit_card_number_id" class="form-control form-control-sm" readonly>
+                    <input type="text" id="unit_card_number_id" class="form-control form-control-sm" th:field="*{card}" readonly>
                 </div>
             </div>
 
@@ -162,14 +162,14 @@
                                   </div>
                               </div>
                               <div class="col">
-                                  <label for="created_at" class="small">дата створення:</label>
-                                  <input id="created_at" class="form-control form-control" type="datetime-local" value="" th:field="*{createdAt}">
+                                  <label for="date-time-card" class="small">дата створення:</label>
+                                  <input id="date-time-card" class="form-control form-control" type="datetime-local" value="" th:field="*{cardDateTime}">
                                   <input type="hidden" readonly id="field_doc_type_id" name="doc_type_id" th:field="*{docType}">
                               </div>
 
                               <div class="col">
-                                  <label for="field_comment" class="small">примітка:</label>
-                                  <input id="field_comment" class="form-control form-control" type="text" th:field="*{comments}">
+                                  <label for="field_card_comment" class="small">примітка:</label>
+                                  <input id="field_card_comment" class="form-control form-control" type="text" th:field="*{comments}">
                               </div>
                               <div class="col-1">
                                   <label for="btn-create-new-card" class="small"> </label>

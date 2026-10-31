@@ -56,7 +56,6 @@
             <table class="table table-hover table-bordered table-sm w-100">
                 <thead class="table-info">
                     <tr>
-                        <th style="text-align: center; width: 30px">ID</th>
                         <th style="text-align: center; width: 60px">№</th>
                         <th style="vertical-align: top">найменування</th>
                         <th style="vertical-align: top; text-align: center; width: 150px">номенклатура</th>
@@ -72,9 +71,9 @@
                 </thead>
                 <tbody id="tableBodyList">
                     <tr th:each="unit, stat : ${units_list}">
-                        <td style="font-size: small" th:text="${unit.id}"> </td>
-                        <td th:text="${stat.index + 1}" class="p-0 text-center"> </td>
-                        <td style="vertical-align: top" th:text="${unit.denomination}"> </td>
+<!--                        <td style="font-size: small" th:text="${unit.id}"> </td>-->
+                        <td th:text="${(stat.index + 1) + '/' + unit.id}" class="p-0 text-center"> </td>
+                        <td style="vertical-align: top" class="p-0" th:text="${unit.denomination}"> </td>
                         <td style="text-align: center" th:text="${unit.nomenclatureID != null ? unit.nomenclature : '-'}"> </td>
                         <td style="text-align: center;">
                             <a th:href="${'/unit/' + unit.id}" th:text="${unit.serialNumber}" class="link-primary link-offset-2 p-0 m-0 text-center"></a>
@@ -83,7 +82,10 @@
                         <td style="text-align: center;" th:text="${unit.year}" > </td>
                         <td style="text-align: right;" th:text="${unit.price}"></td>
                         <td style="text-align: center" th:text="${unit.currentDepartment}"></td>
-                        <td style="text-align: center">99999</td>
+                        <td>
+                            <a th:if="${unit.cardId != null}" th:href="@{/cards/{id}/details(id = ${unit.cardId})}" th:text="${unit.cardNumber}"
+                               class="link-primary link-offset-2 p-0 m-0 text-center"></a>
+                        </td>
                         <td th:text="${unit.comment}" > </td>
 
                         <td>

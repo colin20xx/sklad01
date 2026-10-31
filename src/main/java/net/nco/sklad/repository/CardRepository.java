@@ -14,6 +14,7 @@ import java.util.List;
 @Repository
 public interface CardRepository extends JpaRepository<Card, Long>, JpaSpecificationExecutor<Card> {
 
+    boolean existsByCardNumber(Long cardNumber);
     @Query(value = "select c.id_card, c.card_number, c.qty_ps, c.qty_bts, c.price, n.id, n.nomenclature_name, c.category  " +
             "from sklad.cards c " +
             "left join sklad.nomenclatures n on n.id = c.nomenclature_id " +

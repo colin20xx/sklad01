@@ -84,18 +84,32 @@
         
         $('#btn-create-new-card').on('click', function (e) {
             e.preventDefault();
+            const fieldCardNumberAdded = $('#card_number_added');
+            const fieldNewCardNumber = $('#card_number');
+            if (fieldNewCardNumber.val() === '') return;
+            const card = {
+                cardNumber: fieldNewCardNumber.val(), cardDateTime: $('#date-time-card').val(), docComment: $('#field_card_comment').val()
+            }
 
-            fetch('/cards/simple-create-new-card',
-                {method:'POST',
-                body: new URLSearchParams({cardNumber: $('#card_number').val(), cardDate: $('#created_at').val()})
+            fetch('/cards/simple-create-new-card', { method:'POST', headers: {'Content-type': 'application/json'}, body: JSON.stringify(card)})
+                .then(async response => {
+                    if (response.status === 409){
+                        const  msg = response.text();
+                        alert(msg);
+                        return;
+                    }
+                    return response.json();
                 })
-                .then(promise => async function (){
-                        return await promise.json();
-                    })
                 .then(card =>{
-                    console.log(card);
-                    $('#card_number_added').val(card.cardNumber);
+                    if (!card) return;
+                    fieldCardNumberAdded.val(card.cardNumber);
+                    fieldCardNumberAdded.css('backgroundColor','#e6ffee');
                     $('#unit_card_number_id').val(card.id);
-                });
+
+                    fieldNewCardNumber.val('').css('backgroundColor','#ffffff');
+                    $('#date-time-card').val('');
+                    $('#field_card_comment').val('');
+
+                }).catch(error => console.log(error));
         });
     }//end function

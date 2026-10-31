@@ -11,6 +11,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -162,11 +163,12 @@ public class CardController {
     }
 
     @PostMapping("/cards/simple-create-new-card")
-    public ResponseEntity<Card> simpleCreateNewCard(@RequestParam Long cardNumber, @RequestParam(required = false) @DateTimeFormat(pattern = "dd.mm.yyyy'T'HH:mm")LocalDateTime cardDate){
-        Card card = new Card();
-        card.setCardNumber(cardNumber);
+    public ResponseEntity<?> simpleCreateNewCard(@RequestBody Card card){
+        if (cardRepository.existsByCardNumber(card.getCardNumber())){
+            return ResponseEntity.status(HttpStatus.CONFLICT).body("Картка з номером " + card.getCardNumber() + " вже існує!");
+        };
+        card.setCardDateTime(card.getCardDateTime() == null ? LocalDateTime.now() : card.getCardDateTime());
         card.setCreatedAt(LocalDateTime.now());
-        card.setCardDateTime(cardDate);
         card.setDocType(18);
         cardRepository.save(card);
         return ResponseEntity.ok(card);

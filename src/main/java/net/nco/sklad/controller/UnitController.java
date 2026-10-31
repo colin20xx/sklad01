@@ -48,9 +48,10 @@ public class UnitController {
         return "fragments/fr-modal-new-unit :: div-modal-new-unit";
     }
 
-    @PostMapping("/save")
+    @PostMapping("/save-from-popup")
     public String save(Unit unit) {
         unit.setCreatedAt(LocalDateTime.now());
+
         unitRepository.save(unit);
         return "redirect:/unit/list";
     }

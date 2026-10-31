@@ -24,10 +24,13 @@ public interface UnitRepository extends JpaRepository<Unit, Long> {
               u.price,
               (select coalesce(full_dep,'-') from sklad.department_names where full_dep_ids = concat(u.current_department_id,'_',u.current_subdep_id)) as full_dep,
               coalesce(u.current_department_id,0) as current_department_id,
-              u.current_subdep_id
+              u.current_subdep_id,
+              c.id_card,
+                c.card_number
         from sklad.units u
                 left join sklad.denominations d on u.denomination_id = d.id
-                left join sklad.nomenclatures n on u.nomenclature_id = n.id;
+                left join sklad.nomenclatures n on u.nomenclature_id = n.id
+                left join sklad.cards c on u.card_id = c.id_card;
 """ , nativeQuery = true)
     List<UnitDTO> findAllDTO();
 

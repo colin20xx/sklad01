@@ -17,8 +17,11 @@ public class UnitDTO {
     private String currentDepartment;
     private Integer departmentID;
     private Integer subDepartmentID;
+    private Long cardId;
+    private Long cardNumber;
 
-    public UnitDTO(Long id, String serialNumber, int category, int year, Long denominationID, Long nomenclatureID, String denomination, String nomenclature, String comment, BigDecimal price, String currentDepartment, Integer departmentID, Integer subDepartmentID) {
+
+    public UnitDTO(Long id, String serialNumber, int category, int year, Long denominationID, Long nomenclatureID, String denomination, String nomenclature, String comment, BigDecimal price, String currentDepartment, Integer departmentID, Integer subDepartmentID, Long cardId, Long cardNumber) {
         this.id = id;
         this.serialNumber = serialNumber;
         this.category = category;
@@ -32,6 +35,8 @@ public class UnitDTO {
         this.currentDepartment = currentDepartment;
         this.departmentID = departmentID;
         this.subDepartmentID = subDepartmentID;
+        this.cardId = cardId;
+        this.cardNumber = cardNumber;
     }
 
     public Long getId() {
@@ -136,5 +141,21 @@ public class UnitDTO {
 
     public void setSubDepartmentID(Integer subDepartmentID) {
         this.subDepartmentID = subDepartmentID;
+    }
+
+    public Long getCardId() {
+        return cardId;
+    }
+
+    public void setCardId(Long cardId) {
+        this.cardId = cardId;
+    }
+
+    public Long getCardNumber() {
+        return cardNumber;
+    }
+
+    public void setCardNumber(Long cardNumber) {
+        this.cardNumber = cardNumber;
     }
 }
