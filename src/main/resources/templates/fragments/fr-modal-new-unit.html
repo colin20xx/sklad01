@@ -31,16 +31,20 @@
 
         <div class="container-fluid p-3">
 
-          <div class="row p-0">
-            <div class="col-12">
-              <label for="denomination_select" class="col-form-label-sm">найменування:</label>
-                <select id="denomination_select" th:field="*{denomination}">
-                  <option value=" "></option>
-                  <option th:each="denomination: ${denominations}"
-                          th:text="${denomination.title}"
-                          th:value="${denomination.id}"></option>
-                </select>
-            </div>
+          <div class="row">
+                <div class="col-10">
+                  <label for="denomination_select" class="col-form-label-sm">найменування:</label>
+                    <select id="denomination_select" th:field="*{denomination}">
+                      <option value=" "></option>
+                      <option th:each="denomination: ${denominations}"
+                              th:text="${denomination.title + ' > ' + denomination.omTitle}"
+                              th:value="${denomination.id}"></option>
+                    </select>
+                </div>
+              <div class="col-2">
+                  <label for="denomination_type" class="col-form-label-sm m-0 py-1">тип:</label>
+                  <input type="text" class="form-control form-control-sm" id="denomination_type" readonly>
+              </div>
           </div>
 
             <div class="row p-0">
@@ -172,7 +176,7 @@
                                   <input id="field_card_comment" class="form-control form-control" type="text" th:field="*{comments}">
                               </div>
                               <div class="col-1">
-                                  <label for="btn-create-new-card" class="small"> </label>
+                                  <label for="btn-create-new-card" class="small text-white">________</label>
                                   <button class="btn btn-secondary" type="button" id="btn-create-new-card">додати</button>
                               </div>
                           </div>

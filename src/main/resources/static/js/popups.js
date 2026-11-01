@@ -54,6 +54,8 @@ let currentRequest;
                             width: '100%'
                         });
 
+                        const denominationType = $('#denomination_type');
+
                         $('#denomination_select').select2(
                             {
                                 dropdownParent: $("#globalModalContent"),
@@ -65,6 +67,8 @@ let currentRequest;
                                 .empty()
                                 .append(new Option('виберіть номенклатуру', '', true, true))
                                 .trigger('change');
+
+                            denominationType.val(this.options[this.selectedIndex].text.split('>')[1]);
 
                             fetch('/getNomenclatureListByIdDenomination?idDenom=' + this.value, {method: 'GET'})
                                 .then(res => {

@@ -86,6 +86,9 @@
                     </div>
                 </div>
                 <div class="row border-bottom border-secondary bg-info-subtle mb-2 small">
+                    <div class="col-8">id:</div> <div class="col" th:text="${unit.id}"></div>
+                </div>
+                <div class="row border-bottom border-secondary bg-info-subtle mb-2 small">
                     <div class="col-8">тип:</div> <div class="col" th:text="${unit.denomination.objectName}"></div>
                 </div>
                 <div class="row border-bottom border-secondary bg-body-secondary mb-2 small">
@@ -140,6 +143,7 @@
                         </tr>
                         </thead>
                         <tbody class="small">
+                        <tr></tr>
                         <tr th:each="doc, stat: ${document_list}">
                             <td th:text="${stat.index + 1}" class="text-center"></td>
                             <td th:text="${doc.title}"></td>
