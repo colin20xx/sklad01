@@ -95,6 +95,9 @@ public class Card {
     @JsonIgnore
     private Set<AktTechConditionUnits> atcUnits = new HashSet<>() {};
 
+    @OneToOne(mappedBy = "card")
+    private Unit unit;
+
     public Card() {}
 
     public Long getId() {
@@ -263,5 +266,13 @@ public class Card {
 
     public void setAtcUnits(Set<AktTechConditionUnits> atcUnits) {
         this.atcUnits = atcUnits;
+    }
+
+    public Unit getUnit() {
+        return unit;
+    }
+
+    public void setUnit(Unit unit) {
+        this.unit = unit;
     }
 }
